@@ -1,0 +1,6 @@
+{
+  "name": "gitlab-ci",
+  "script": "npm",
+  "args": "start",
+  "instances": 1
+}
