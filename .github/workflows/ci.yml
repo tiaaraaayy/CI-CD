@@ -2,23 +2,28 @@ name: Docker CI/CD
 
 on:
   push:
-    branches: ["main"]
+    branches:
+      - main
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Code
+      # 1. Ambil code dari repo
+      - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Login ke Docker Hub
+      # 2. Login ke Docker Hub
+      - name: Login Docker
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
-      - name: Build Docker Image
+      # 3. Build Docker Image
+      - name: Build Image
         run: docker build -t ${{ secrets.DOCKER_USERNAME }}/ci-cd-app .
 
-      - name: Push Docker Image
+      # 4. Push ke Docker Hub
+      - name: Push Image
         run: docker push ${{ secrets.DOCKER_USERNAME }}/ci-cd-app
 
   deploy:
@@ -28,3 +33,6 @@ jobs:
     steps:
       - name: Deploy (dummy)
         run: echo "Deploy berhasil!"
+
+        - name: Debug username
+  run: echo "USER=${{ secrets.DOCKER_USERNAME }}"
